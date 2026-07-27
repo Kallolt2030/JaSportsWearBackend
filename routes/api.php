@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\RegisterController;
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -102,3 +106,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/packages/{id}', [packagesController::class, 'update']);
     Route::delete('/packages/{id}', [packagesController::class, 'destroy']);
 });
+
+
+Route::post('/forgot-password', [ForgotPasswordController::class, 'store']);
+Route::post('/reset-password', [ResetPasswordController::class, 'store']);

@@ -20,6 +20,8 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 
+use App\Http\Controllers\CartController;
+
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -105,6 +107,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/packages', [packagesController::class, 'store']);
     Route::put('/packages/{id}', [packagesController::class, 'update']);
     Route::delete('/packages/{id}', [packagesController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/cart', [CartController::class, 'index']);
+    Route::post('/cart/add', [CartController::class, 'add']);
+    Route::put('/cart/item/{id}', [CartController::class, 'update']);
+    Route::delete('/cart/item/{id}', [CartController::class, 'destroy']);
+    Route::post('/cart/sync', [CartController::class, 'sync']);
 });
 
 

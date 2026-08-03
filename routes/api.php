@@ -22,6 +22,8 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 
 use App\Http\Controllers\CartController;
 
+use App\Http\Controllers\OrderController;
+
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -115,6 +117,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/cart/item/{id}', [CartController::class, 'update']);
     Route::delete('/cart/item/{id}', [CartController::class, 'destroy']);
     Route::post('/cart/sync', [CartController::class, 'sync']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    // Historial del usuario
+    Route::get('/my-orders', [OrderController::class, 'myOrders']);
+
+    // Administrador
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::get('/orders/{order}', [OrderController::class, 'show']);
+    Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus']);
 });
 
 

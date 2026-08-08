@@ -24,6 +24,8 @@ use App\Http\Controllers\CartController;
 
 use App\Http\Controllers\OrderController;
 
+use App\Http\Controllers\CheckoutController;
+
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -129,6 +131,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/orders/{order}', [OrderController::class, 'show']);
     Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus']);
 });
+
+Route::middleware('auth:sanctum')->post('/checkout', [CheckoutController::class, 'checkout']);
 
 
 Route::post('/forgot-password', [ForgotPasswordController::class, 'store']);

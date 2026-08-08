@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Cart;
+use App\Models\CartItem;
+use App\Models\Product;
 
 class CartController extends Controller
 {
@@ -73,26 +76,33 @@ class CartController extends Controller
     }
 
     public function sync(Request $request)
-    {
-        $cart = Cart::firstOrCreate([
-            'user_id' => auth()->id()
-        ]);
+{
+    $request->validate([
+        'items' => 'required|array'
+    ]);
 
-        foreach ($request->items as $item) {
+    $cart = Cart::firstOrCreate([
+        'user_id' => auth()->id()
+    ]);
 
-            CartItem::updateOrCreate(
-                [
-                    'cart_id' => $cart->id,
-                    'product_id' => $item['product_id']
-                ],
-                [
-                    'quantity' => $item['quantity']
-                ]
-            );
-        }
+    foreach ($request->items as $item) {
 
-        return response()->json([
-            'message' => 'Carrito sincronizado'
-        ]);
+        $product = Product::findOrFail($item['id']);
+
+        CartItem::updateOrCreate(
+            [
+                'cart_id' => $cart->id,
+                'product_id' => $product->id
+            ],
+            [
+                'quantity' => $item['quantity'],
+                'price' => $product->price
+            ]
+        );
     }
+
+    return response()->json([
+        'message' => 'Carrito sincronizado'
+    ]);
+}
 }

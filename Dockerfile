@@ -39,8 +39,7 @@ RUN composer install --optimize-autoloader --no-dev
 # Dar permisos al script
 RUN chmod +x ./start.sh
 
-# Puerto de Render
-ENV PORT=10000
+
 
 # Iniciar Laravel
 CMD ["sh", "./start.sh"]

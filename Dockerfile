@@ -13,8 +13,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     curl \
     git \
-    libpq-dev \
-    && docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
+    libmysqlclient-dev \
+    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
 
 # Copiar archivos de la app
 COPY . /var/www/html

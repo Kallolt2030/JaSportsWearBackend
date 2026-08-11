@@ -5,20 +5,18 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\packagesController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TicketController;
-
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ImageController; //image
-
 use App\Http\Controllers\PostController; //post
-
 use App\Http\Controllers\UserController;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\RegisterController;
-
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CheckoutController;
 
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -106,6 +104,35 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/packages/{id}', [packagesController::class, 'update']);
     Route::delete('/packages/{id}', [packagesController::class, 'destroy']);
 });
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/cart', [CartController::class, 'index']);
+    Route::post('/cart/add', [CartController::class, 'add']);
+    Route::put('/cart/item/{id}', [CartController::class, 'update']);
+    Route::delete('/cart/item/{id}', [CartController::class, 'destroy']);
+    Route::post('/cart/sync', [CartController::class, 'sync']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    // Historial del usuario
+    Route::get('/my-orders', [OrderController::class, 'myOrders']);
+
+    // Administrador
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::get('/orders/{order}', [OrderController::class, 'show']);
+    Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus']);
+});
+
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::post('/admins', [AdminController::class, 'store']);
+    Route::get('/admins', [AdminController::class, 'index']);
+
+});
+
+Route::middleware('auth:sanctum')->post('/checkout', [CheckoutController::class, 'checkout']);
 
 
 Route::post('/forgot-password', [ForgotPasswordController::class, 'store']);
